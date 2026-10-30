@@ -1,4 +1,4 @@
-/**
+/*
 * @license Apache-2.0
 *
 * Copyright (c) 2026 The Stdlib Authors.
@@ -16,22 +16,33 @@
 * limitations under the License.
 */
 
-'use strict';
+// TypeScript Version: 4.1
 
-// MODULES //
+/// <reference types="https://cdn.jsdelivr.net/gh/stdlib-js/types@main/index.d.ts"/>
 
-var incrmmidrange = require( '@stdlib/stats-incr-mmidrange' );
-var isnan = require( '@stdlib/math-base-assert-is-nan' );
-
-
-// MAIN //
+/**
+* If provided a value, returns an updated mid-range; otherwise, returns the current mid-range.
+*
+* ## Notes
+*
+* -   The mid-range is the arithmetic mean of maximum and minimum values. Accordingly, the mid-range is the midpoint of the range and a measure of central tendency.
+*
+* @param x - value
+* @returns mid-range
+*/
+type accumulator = ( x?: number ) => number | null;
 
 /**
 * Returns an accumulator function which incrementally computes a moving mid-range, ignoring `NaN` values.
 *
-* @param {PositiveInteger} W - window size
-* @throws {TypeError} must provide a positive integer
-* @returns {Function} accumulator function
+* ## Notes
+*
+* -   The `W` parameter defines the number of values over which to compute the moving mid-range.
+* -   As `W` values are needed to fill the window buffer, the first `W-1` returned values are calculated from smaller sample sizes. Until the window is full, each returned value is calculated from all provided values.
+*
+* @param W - window size
+* @throws must provide a positive integer
+* @returns accumulator function
 *
 * @example
 * var accumulator = incrnanmmidrange( 3 );
@@ -57,26 +68,9 @@ var isnan = require( '@stdlib/math-base-assert-is-nan' );
 * mr = accumulator();
 * // returns 0.0
 */
-function incrnanmmidrange( W ) {
-	var mmidrange = incrmmidrange( W );
-	return accumulator;
-
-	/**
-	* If provided a value, the accumulator function returns an updated mid-range. If not provided a value, the accumulator function returns the current mid-range.
-	*
-	* @private
-	* @param {number} [x] - input value
-	* @returns {(number|null)} mid-range or null
-	*/
-	function accumulator( x ) {
-		if ( arguments.length === 0 || isnan( x ) ) {
-			return mmidrange();
-		}
-		return mmidrange( x );
-	}
-}
+declare function incrnanmmidrange( W: number ): accumulator;
 
 
 // EXPORTS //
 
-module.exports = incrnanmmidrange;
+export = incrnanmmidrange;
